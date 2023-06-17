@@ -157,7 +157,7 @@ impl MySqlConnection {
 
                 let num_columns = packet.get_uint_lenenc() as usize; // column count
 
-                if needs_metadata {
+                if needs_metadata || num_columns != column_names.len() {
                     column_names = Arc::new(recv_result_metadata(&mut self.stream, num_columns, Arc::make_mut(&mut columns)).await?);
                 } else {
                     // next time we hit here, it'll be a new result set and we'll need the
